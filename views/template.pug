@@ -1,0 +1,62 @@
+doctype html
+html(lang='en-GB')
+  head
+    title OIP Template Explorer
+
+    link(rel="stylesheet" type="text/css" href="style.css")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="icon" href="favicon-v2.png")
+    meta(property="og:title" content="OIP Template Explorer")
+    meta(property="og:site_name" content="OIP Template Explorer")
+    meta(property="og:url" content="https://floblockchain.org/oip-template-explorer/")
+    meta(
+        property="og:description"
+        content="Explore OIP templates published to the FLO blockchain "
+    )
+    meta(property="og:type" content="website")
+    meta(property="og:image" content="https://floblockchain.org/FLO.png")
+
+  body
+    div(id="top" class="floblockchain-header")
+      h1
+        a(href="https://floblockchain.org") FLO Blockchain
+    div(style="text-align:center;")
+      img(src="FLO.png" alt="FLO")
+      div(class="floblockchain-text top")
+        h3 Recent OIP Records for Template #{data.template_name} (#{data.friendly_name})
+        a(id="top-link" href="#whats-this") Learn More
+
+    table(id="tbl")
+      thead
+        tr
+          td signer
+          td time
+          td txid
+          td block
+          td record details
+
+      - var classcount=0;
+      script 
+        | console.log(!{JSON.stringify(data)});
+      each result in data.results
+        tr(class=(1+classcount++)%2 ? 'bg' : '')
+          - var signed_by_url = "http://network.flo.cash/address/" + result.meta.signed_by
+          td(class="signer")
+            a(href=''+signed_by_url) #{result.meta.signed_by.substring(0, 6) + "..."}
+          td
+            span(title=result.meta.time)= result.meta.timeago
+          td
+            a(href=("http://network.flo.cash/tx/" + result.meta.txid) target="_blank") #{result.meta.txid.substring(0, 6) + "..."}
+          td
+            a(href=("http://network.flo.cash/block/" + result.meta.block_hash) target="_blank") #{result.meta.block}
+          - var details = JSON.stringify(result.record.details, null, '\t')
+          td #{details}
+
+    div(class="floblockchain-text")
+      h2(id="whats-this") About
+      p These are recent OIP record templates found on the FLO blockchain.
+      h3 OIP
+      p Learn more about OIP here: [#[a(href="https://openindexprotocol.com") OpenIndexProtocol]]
+      h3 How was it made?
+      p This page was created using #[a(href="https://github.com/oipwg/oip") oip], a golang application that allows you to interact with the Open Index Protocol and the FLO blockchain. 
+      p [#[a(href="#top") Back to top]]

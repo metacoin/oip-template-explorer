@@ -1,0 +1,102 @@
+doctype html
+html(lang='en-GB')
+  head
+    title OIP Template Explorer
+
+    link(rel="stylesheet" type="text/css" href="style.css")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="icon" href="favicon-v2.png")
+    meta(property="og:title" content="OIP Template Explorer")
+    meta(property="og:site_name" content="OIP Template Explorer")
+    meta(property="og:url" content="https://floblockchain.org/oip-template-explorer/")
+    meta(
+        property="og:description"
+        content="Explore OIP templates published to the FLO blockchain "
+    )
+    meta(property="og:type" content="website")
+    meta(property="og:image" content="https://floblockchain.org/FLO.png")
+
+  body
+    div(id="top" class="floblockchain-header")
+      h1
+        a(href="https://floblockchain.org") FLO Blockchain
+    div(style="text-align:center;")
+      img(src="FLO.png" alt="FLO")
+      div(class="floblockchain-text top")
+        h3 Recent OIP Templates
+        a(id="top-link" href="#whats-this") Learn More
+
+    table(id="tbl")
+      thead
+        tr
+          td name
+          td template
+          td time
+          td txid
+          td block
+          td description
+
+      - var classcount=0;
+      script 
+        | console.log(!{JSON.stringify(data)});
+      each record in data.results
+        tr(class=(1+classcount++)%2 ? 'bg' : '')
+          td(class="name")= record.template.friendly_name
+          - var template_name = record.template.name
+          - var link_url = 'template?template=' + template_name + '&friendly_name=' + record.template.friendly_name
+          td(class="td_template" title=template_name) 
+            a(href =''+link_url) #{record.template.name}
+          td
+            span(title=record.meta.time)= record.meta.timeago
+          td
+            a(href=("http://network.flo.cash/tx/" + record.meta.txid) target="_blank") #{record.meta.txid.substring(0, 6) + "..."}
+          td
+            a(href=("http://network.flo.cash/block/" + record.meta.block_hash) target="_blank") #{record.meta.block}
+          td #{record.template.description}
+      tr(class="pagination")
+        td 
+          if (data.total/data.count == parseInt(data.total/data.count))
+            - data.nextpagelast = (data.page+1 == data.total/data.count)
+          else 
+            script
+              | console.log(!{JSON.stringify(data.page)})
+              | console.log(!{JSON.stringify(parseInt(data.total/data.count)+1)})
+            - data.nextpagelast = (parseInt(data.page)+1 == parseInt(data.total/data.count)+1)
+
+          if (data.last == 1) 
+            span Page #{data.page}/#{data.page}
+          else 
+            if (data.total/data.count)==(parseInt(data.total/data.count))
+              span Page #{data.page}/#{data.total/data.count}
+            else
+              span Page #{data.page}/#{parseInt(data.total/data.count)+1}
+        td
+        td
+        td
+        td
+        td
+          div(class="pagination_prev") 
+            if (data.page == 1)
+              span(class="previous_disabled") << Previous page
+            else 
+              <a href = "javascript: history.go(-1)"> << Previous page</a>
+
+          div(class="pagination_next") 
+            script
+              | console.log(!{JSON.stringify(data.nextpagelast)})
+            if (data.last == 1) 
+              span(class="previous_disabled") Next page >>
+            else
+              if (data.nextpagelast)
+                <a href = "page?page=#{parseInt(data.page)+1}&after=#{encodeURIComponent(data.next)}&last=1">Next page >></a>
+              else 
+                <a href = "page?page=#{parseInt(data.page)+1}&after=#{encodeURIComponent(data.next)}&last=0">Next page >></a>
+
+    div(class="floblockchain-text")
+      h2(id="whats-this") About
+      p These are recent OIP record templates found on the FLO blockchain.
+      h3 OIP
+      p Learn more about OIP here: [#[a(href="https://openindexprotocol.com") OpenIndexProtocol]]
+      h3 How was it made?
+      p This page was created using #[a(href="https://github.com/oipwg/oip") oip], a golang application that allows you to interact with the Open Index Protocol and the FLO blockchain. 
+      p [#[a(href="#top") Back to top]]

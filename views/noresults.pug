@@ -1,0 +1,29 @@
+doctype html
+html(lang='en-GB')
+  head
+    title OIP Template Explorer
+
+    link(rel="stylesheet" type="text/css" href="style.css")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="icon" href="favicon-v2.png")
+    meta(property="og:title" content="OIP Template Explorer")
+    meta(property="og:site_name" content="OIP Template Explorer")
+    meta(property="og:url" content="https://floblockchain.org/oip-template-explorer/")
+    meta(
+        property="og:description"
+        content="Explore OIP templates published to the FLO blockchain "
+    )
+    meta(property="og:type" content="website")
+    meta(property="og:image" content="https://floblockchain.org/FLO.png")
+
+  body
+    div(id="top" class="floblockchain-header")
+      h1
+        a(href="https://floblockchain.org") FLO Blockchain
+    div(style="text-align:center;")
+      img(src="FLO.png" alt="FLO")
+      div(class="floblockchain-text top")
+        h3 Recent OIP Records for Template #{data.template_name} (#{data.friendly_name})
+        div
+          span No results found. <a href = "javascript: history.go(-1)"> << Previous page</a>
+
