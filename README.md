@@ -41,3 +41,5 @@ ProxyPassReverse /oip-template-explorer http://localhost:3000
 * Display more info per template in a dropdown
 * Sidebar navigation
 * Favorites
+* Fix pagination
+* Configuration for local OIP API
